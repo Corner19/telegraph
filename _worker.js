@@ -779,7 +779,7 @@ async function handleImageRequest(request, DATABASE, TG_BOT_TOKEN) {
     const telegramFileUrl = `https://api.telegram.org/file/bot${TG_BOT_TOKEN}/${filePath}`;
     const response = await fetch(telegramFileUrl);
     if (response.ok) {
-      const fileExtension = requestedUrl.split('.').pop().toLowerCase();
+      const fileExtension = filePath.split('.').pop().toLowerCase();
       let contentType = 'text/plain';
       if (fileExtension === 'jpg' || fileExtension === 'jpeg') {
         contentType = 'image/jpeg';
