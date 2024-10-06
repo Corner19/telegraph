@@ -749,7 +749,7 @@ async function handleUploadRequest(request, DATABASE, enableAuth, USERNAME, PASS
     const timestamp = Date.now();
     const imageURL = `https://${domain}/${timestamp}.${fileExtension}`;
     await DATABASE.prepare('INSERT OR IGNORE INTO media (fileId, url) VALUES (?, ?)').bind(fileId, imageURL).run();
-    return new Response(JSON.stringify({ data: imageURL }), {
+    return new Response(JSON.stringify({ data: imageURL,type: file.type }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' }
     });
