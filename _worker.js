@@ -733,7 +733,7 @@ async function handleUploadRequest(request, DATABASE, enableAuth, USERNAME, PASS
     else if (responseData.result.sticker) fileId = responseData.result.sticker.file_id;
     else throw new Error('返回的数据中没有文件 ID');
     const fileExtension = file.name.split('.').pop();
-    const timestamp = Date.now();
+    const timestamp = getRandomSixNum() + Date.now();
     const imageURL = `https://${domain}/${timestamp}.${fileExtension}`;
     await DATABASE.prepare('INSERT INTO media (url, fileId) VALUES (?, ?) ON CONFLICT(url) DO NOTHING').bind(imageURL, fileId).run();
     return new Response(JSON.stringify({ data: imageURL,type: file.type }), { status: 200, headers: { 'Content-Type': 'application/json' } });
@@ -819,4 +819,12 @@ async function handleDeleteImagesRequest(request, DATABASE) {
   } catch (error) {
     return new Response(JSON.stringify({ error: '删除失败', details: error.message }), { status: 500 });
   }
+}
+
+function getRandomSixNum() {
+  let RandomSixStr = ''
+  for(let i = 0;i < 6; i++) {
+    RandomSixStr += String(Math.floor(Math.random()*10))
+  }
+  return RandomSixStr
 }
