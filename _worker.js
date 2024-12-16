@@ -909,7 +909,7 @@ async function handleUploadRequest(request, DATABASE, enableAuth, USERNAME, PASS
     const timestamp = getRandomSixNum() + Date.now();
     const imageURL = `https://${domain}/${timestamp}.${fileExtension}`;
     await DATABASE.prepare('INSERT INTO media (url, fileId) VALUES (?, ?) ON CONFLICT(url) DO NOTHING').bind(imageURL, fileId).run();
-    return new Response(JSON.stringify({ data: imageURL, type: file.type}), { status: 200, headers: { 'Content-Type': 'application/json' } });
+    return new Response(JSON.stringify({ data: imageURL}), { status: 200, headers: { 'Content-Type': 'application/json' } });
   } catch (error) {
     console.error('内部服务器错误:', error);
     return new Response(JSON.stringify({ error: error.message }), { status: 500, headers: { 'Content-Type': 'application/json' } });
