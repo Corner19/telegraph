@@ -911,7 +911,7 @@ async function handleUploadRequest(request, DATABASE, enableAuth, USERNAME, PASS
     return new Response(JSON.stringify({ data: imageURL, type: file.type}), { status: 200, headers: { 'Content-Type': 'application/json' } });
   } catch (error) {
     console.error('内部服务器错误:', error);
-    return new Response(JSON.stringify({ error: error.message, type: file.type }), { status: 500, headers: { 'Content-Type': 'application/json' } });
+    return new Response(JSON.stringify({ error: error.message }), { status: 500, headers: { 'Content-Type': 'application/json' } });
   }
 }
 
