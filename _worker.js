@@ -912,8 +912,6 @@ async function handleUploadRequest(request, DATABASE, enableAuth, USERNAME, PASS
     await DATABASE.prepare('INSERT INTO media (url, fileId) VALUES (?, ?) ON CONFLICT(url) DO NOTHING').bind(imageURL, fileId).run();
     return new Response(JSON.stringify({ data: imageURL, type: file.type ,fileId: fileId}), { status: 200, headers: { 'Content-Type': 'application/json' } });
   } catch (error) {
-    const formData = await request.formData();
-    const file = formData.get('file');
     console.error('内部服务器错误:', error);
     return new Response(JSON.stringify({ error: error.message, type: file.type }), { status: 500, headers: { 'Content-Type': 'application/json' } });
   }
