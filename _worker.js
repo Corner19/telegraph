@@ -880,9 +880,7 @@ async function handleUploadRequest(request, DATABASE, enableAuth, USERNAME, PASS
   try {
     const formData = await request.formData();
     const file = formData.get('file');
-    if (!file || !(file instanceof File)) {
-        throw new Error('文件缺失或无效');
-    }
+    if (!file) throw new Error('缺少文件');
     if (enableAuth && !authenticate(request, USERNAME, PASSWORD)) {
       return new Response('Unauthorized', { status: 401, headers: { 'WWW-Authenticate': 'Basic realm="Admin"' } });
     }
