@@ -889,7 +889,7 @@ async function handleUploadRequest(request, DATABASE, enableAuth, USERNAME, PASS
     const uploadFormData = new FormData();
     uploadFormData.append("chat_id", TG_CHAT_ID);
     let fileId;
-    if (file.type && file.type.startsWith('image/gif')) {
+    if (file.type.startsWith('image/gif')) {
       const newFileName = file.name.replace(/\.gif$/, '.jpeg') || 'default.jpeg';
       const newFile = new File([file], newFileName, { type: 'image/jpeg' });
       uploadFormData.append("document", newFile);
