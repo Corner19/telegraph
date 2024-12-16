@@ -880,15 +880,17 @@ async function handleUploadRequest(request, DATABASE, enableAuth, USERNAME, PASS
   try {
     const formData = await request.formData();
     const file = formData.get('file');
-    if (!file) throw new Error('缺少文件');
+    if (!file || !(file instanceof File)) {
+        throw new Error('文件缺失或无效');
+    }
     if (enableAuth && !authenticate(request, USERNAME, PASSWORD)) {
       return new Response('Unauthorized', { status: 401, headers: { 'WWW-Authenticate': 'Basic realm="Admin"' } });
     }
     const uploadFormData = new FormData();
     uploadFormData.append("chat_id", TG_CHAT_ID);
     let fileId;
-    if (file.type.startsWith('image/gif')) {
-      const newFileName = file.name.replace(/\.gif$/, '.jpeg');
+    if (file.type && file.type.startsWith('image/gif')) {
+      const newFileName = file.name.replace(/\.gif$/, '.jpeg') || 'default.jpeg';
       const newFile = new File([file], newFileName, { type: 'image/jpeg' });
       uploadFormData.append("document", newFile);
     } else {
