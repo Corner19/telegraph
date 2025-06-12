@@ -898,7 +898,7 @@ async function handleUploadRequest(request, DATABASE, enableAuth, USERNAME, PASS
     else if (responseData.result.sticker) fileId = responseData.result.sticker.file_id;
     else throw new Error('返回的数据中没有文件 ID');
     const fileExtension = file.name.split('.').pop();
-    const timestamp = Date.now();
+    const timestamp = generateRandomString() + Date.now();
     const imageURL = `https://${domain}/${timestamp}.${fileExtension}`;
     await DATABASE.prepare('INSERT INTO media (url, fileId) VALUES (?, ?) ON CONFLICT(url) DO NOTHING').bind(imageURL, fileId).run();
     return new Response(JSON.stringify({ data: imageURL }), { status: 200, headers: { 'Content-Type': 'application/json' } });
@@ -1007,4 +1007,12 @@ async function handleDeleteImagesRequest(request, DATABASE, USERNAME, PASSWORD) 
   } catch (error) {
     return new Response(JSON.stringify({ error: '删除失败', details: error.message }), { status: 500 });
   }
+}
+function generateRandomString(length = 4) {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let result = '';
+  for (let i = 0; i < length; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return result;
 }
